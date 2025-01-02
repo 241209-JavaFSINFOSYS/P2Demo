@@ -4,24 +4,25 @@ import com.revature.models.Team;
 
 //Here's another very common DTO -
 //send user info without password or any other sensitive info
-public class OutgoingUserDTO {
+public class OutgoingUserWithJWT {
 
     private int userId;
     private String username;
     private String role;
     private Team team;
+    private String token; //This will hold the User's JWT!
 
     //boilerplate-------------------------
 
-
-    public OutgoingUserDTO() {
+    public OutgoingUserWithJWT() {
     }
 
-    public OutgoingUserDTO(int userId, String username, String role, Team team) {
+    public OutgoingUserWithJWT(int userId, String username, String role, Team team, String token) {
         this.userId = userId;
-        this.team = team;
-        this.role = role;
         this.username = username;
+        this.role = role;
+        this.team = team;
+        this.token = token;
     }
 
     public int getUserId() {
@@ -56,6 +57,14 @@ public class OutgoingUserDTO {
         this.team = team;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "OutgoingUserDTO{" +
@@ -63,6 +72,8 @@ public class OutgoingUserDTO {
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", team=" + team +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
+

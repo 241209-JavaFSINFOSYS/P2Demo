@@ -2,8 +2,9 @@ package com.revature.controllers;
 
 import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
+import com.revature.models.DTOs.OutgoingUserWithJWT;
 import com.revature.models.User;
-import com.revature.services.AuthService;
+//import com.revature.services.AuthService;
 import com.revature.utils.JwtTokenUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class AuthController {
             //Return the OutgoingUserDTO info to the client
             //NOTE: in a real app, we could just send the JWT as it has all the info we need
                 //But I'm going to return all the user info just for clarity in in our returns
-            return ResponseEntity.ok(new OutgoingUserDTO(
+            return ResponseEntity.ok(new OutgoingUserWithJWT(
                     user.getUserId(),
                     user.getUsername(),
                     user.getRole(),
