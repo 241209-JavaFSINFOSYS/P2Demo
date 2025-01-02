@@ -2,10 +2,15 @@ package com.revature.controllers;
 
 import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
+import com.revature.models.User;
 import com.revature.services.AuthService;
+import com.revature.utils.JwtTokenUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,45 +20,50 @@ import org.springframework.web.bind.annotation.*;
         allowCredentials = "true")
 public class AuthController {
 
-    //autowire the service
-    private final AuthService authService;
+    //autowire the AuthenticationManager and the JwtTokenUtil
+    private final JwtTokenUtil jwtTokenUtil;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping
-    public ResponseEntity<OutgoingUserDTO> login(@RequestBody LoginDTO loginDTO, HttpSession session){
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
 
-        //NOTE: we have an HTTP Session coming in via parameters, inherently included in HTTP requests
+        //NOTE: No more HTTP sessions! We're using JWTs now!
+        //No calls to the service layer either!
 
-        //send the loginDTO to the service
-        OutgoingUserDTO user = authService.login(loginDTO);
+        //Attempt to log in
+        try{
+            //The AuthenticationManager from Spring Security is now in charge of checking username/password
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
+            );
 
-        System.out.println("User " + session.getAttribute("username") + " logged in!");
+            //If auth is successful, build a user based on the logged in user data
+            User user = (User) auth.getPrincipal();
 
-        //If we get here, login was successful and we can create the session!
-        session.setAttribute("userId", user.getUserId());
-        session.setAttribute("username", user.getUsername());
-        session.setAttribute("role", user.getRole());
+            //Finally, generate a JWT for the user to use in subsequent requests
+            String token = jwtTokenUtil.generateAccessToken(user);
 
-        System.out.println("User " + session.getAttribute("username") + " logged in!");
+            //Return the OutgoingUserDTO info to the client
+            //NOTE: in a real app, we could just send the JWT as it has all the info we need
+                //But I'm going to return all the user info just for clarity in in our returns
+            return ResponseEntity.ok(new OutgoingUserDTO(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getRole(),
+                    user.getTeam(),
+                    token
+            ));
 
-        //Why store all this info in a session?
-
-        /*
-        -It lets us store User info that we can use to check if:
-            -they're logged in
-            -their role is appropriate for the functionality they want to access
-            -personalize the app (use their name in the UI, etc.)
-            -simplify our URLs!
-                ex: use the stored userId in "findXByUserId" methods
-                instead of passing it in the path variable
-         */
-
-        //Return the user info to the client
-        return ResponseEntity.ok(user);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
 
     }
 

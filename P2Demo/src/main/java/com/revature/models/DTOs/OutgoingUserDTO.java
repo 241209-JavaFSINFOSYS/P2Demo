@@ -10,6 +10,7 @@ public class OutgoingUserDTO {
     private String username;
     private String role;
     private Team team;
+    private String token; //This will hold the User's JWT!
 
     //boilerplate-------------------------
 
@@ -17,11 +18,12 @@ public class OutgoingUserDTO {
     public OutgoingUserDTO() {
     }
 
-    public OutgoingUserDTO(int userId, String username, String role, Team team) {
+    public OutgoingUserDTO(int userId, String username, String role, Team team, String token) {
         this.userId = userId;
         this.team = team;
         this.role = role;
         this.username = username;
+        this.token = token;
     }
 
     public int getUserId() {
@@ -56,6 +58,14 @@ public class OutgoingUserDTO {
         this.team = team;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "OutgoingUserDTO{" +
@@ -63,6 +73,7 @@ public class OutgoingUserDTO {
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", team=" + team +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
