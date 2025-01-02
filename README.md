@@ -1,4 +1,4 @@
-# P2Demo!!
+# P2Demo!
 
 - JWT and Spring Security for auth, security, and password encryption on the backend
 
