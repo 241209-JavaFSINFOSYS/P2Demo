@@ -1,12 +1,17 @@
 package com.revature.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.List;
 
 @Component //1 of the 4 stereotype annotations (makes the class a Bean)
 @Entity //This annotation makes a DB table based on this Class
 @Table(name = "users") //This annotation lets us specify properties (like table name)
-public class User {
+public class User implements UserDetails {
 
     @Id //This annotation makes the field a primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //This makes our PK auto-increment integers
@@ -59,9 +64,36 @@ public class User {
         return username;
     }
 
+    //~~~~~~~~~~~~~~~ UserDetails Overrides ~~~~~~~~~~~~~~~~
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+    //~~~~~~~~~~~~~~~ UserDetails Overrides ~~~~~~~~~~~~~~~~
 
     public String getPassword() {
         return password;

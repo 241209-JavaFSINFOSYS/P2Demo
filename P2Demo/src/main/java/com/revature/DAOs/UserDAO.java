@@ -13,4 +13,7 @@ public interface UserDAO extends JpaRepository<User, Integer> {
     //This property expression will need to dig into the team field of User to find the ID
     public List<User> findByTeam_TeamId(int teamId);
 
+    //Find by Username
+    public User findByUsername(String username);
+
 }
