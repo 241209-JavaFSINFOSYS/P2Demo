@@ -7,6 +7,7 @@ import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.models.Team;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,11 +20,14 @@ public class UserService {
     //constructor inject the UserDAO and the TeamDAO
     private final UserDAO userDAO;
     private final TeamDAO teamDAO;
+    //adding a password encoder to encrypt passwords
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserDAO userDAO, TeamDAO teamDAO) {
+    public UserService(UserDAO userDAO, TeamDAO teamDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.teamDAO = teamDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //insert a new User into the DB
@@ -41,6 +45,11 @@ public class UserService {
                 userDTO.getPassword(),
                 userDTO.getRole(),
                 null);
+
+        //PASSWORD ENCRYPTION---------
+
+        //use the password encoder we autowired to encrypt the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         //using the TeamDAO to get a team by ID
         //findById() returns an optional,
