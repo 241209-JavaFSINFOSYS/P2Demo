@@ -28,8 +28,14 @@ export const Teams:React.FC = () => {
     //The function that sends the GET request
     const getAllTeams = async () => {
 
+        console.log(store.loggedInUser.token)
+
         //axios GET request
-        const response = await axios.get("http://localhost:4444/teams", {withCredentials:true})
+        const response = await axios.get("http://localhost:4444/teams", {
+            headers: {
+                'Authorization':`Bearer ${store.loggedInUser.token}`
+            }
+        })
 
         //populate the teams state object
         setTeams(response.data)

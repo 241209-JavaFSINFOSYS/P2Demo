@@ -32,11 +32,14 @@ export const Users:React.FC  = () => {
     }, []) //[] so that this runs only once, when the component re-renders
 
 
-
     //Function to get all users 
     const getAllUsers = async () => {
 
-        const response = await axios.get("http://localhost:4444/users", {withCredentials:true})
+        const response = await axios.get("http://localhost:4444/users", {
+            headers: {
+                'Authorization':`Bearer ${store.loggedInUser.token}`
+            }
+        })
         .then((response)=>{
             console.log(response)
             setUsers(response.data)

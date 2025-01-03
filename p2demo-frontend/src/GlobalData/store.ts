@@ -12,7 +12,8 @@ export const store = {
         userId:0,
         username:"", 
         role:"",
-        team:{}
+        team:{},
+        token:"" //Allow the JWT to get stored on the front end for future requests
     }
 
     //THIS ISN'T BEST PRACTICE BY THE WAY! For one, the data will be wiped if you refresh

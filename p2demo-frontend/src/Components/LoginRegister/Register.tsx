@@ -46,6 +46,7 @@ export const Register:React.FC = () => {
         //TODO: check that the username/password are present and valid
 
         //POST request - saving the response, but we won't need to use it here
+        //NOTE the request to the (now-dead EC2)
         const response = await axios.post("http://98.81.79.249:4444/users", newUser, {withCredentials:true})
         .then(()=>{
             alert("User " + newUser.username + " created!")
