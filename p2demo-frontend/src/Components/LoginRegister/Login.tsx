@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { store } from "../../GlobalData/store"
+import { useAuth } from "../../Contexts/AuthContext"
 
 export const Login:React.FC = () => {
 
@@ -12,6 +13,7 @@ export const Login:React.FC = () => {
         password:""
     })
 
+    const { loggedInUser, setLoggedInUser } = useAuth();
 
     //we can use the useNavigate hook to navigate between components programatically
         //(which means we don't have to manually change the URL to switch components)
@@ -42,12 +44,17 @@ export const Login:React.FC = () => {
             (response) => {
                 console.log(response)
 
+                setLoggedInUser(response.data)
+
+                alert("Welcome, " + loggedInUser?.username)
+
+                /*
                 //save this data globally - great way to make important data easy to access
                 //check the store.ts in GlobalData
                 store.loggedInUser = response.data
 
                 //greet the user
-                alert("Welcome, " + store.loggedInUser.username)
+                alert("Welcome, " + store.loggedInUser.username) */
 
                 //players will get sent to the teams component, managers get sent to users
                 if(response.data.role === "player"){

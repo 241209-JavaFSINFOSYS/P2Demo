@@ -62,10 +62,10 @@ public class JwtTokenUtil {
 
     //we need this method to get the userID from the JWT (stored in the subject)
     //the subject tends to be used for unique identifiers
-    public int extractUserId(String token) {
+    public UUID extractUserId(String token) {
         Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
         String subject = claimsJws.getBody().getSubject();
-        return Integer.parseInt(subject);
+        return UUID.fromString(subject);
     }
 
     //we need the following 2 methods to get the username and role from the JWT (stored in the claims)

@@ -3,15 +3,18 @@ import { useEffect, useState } from "react"
 import { Button, Container, Table } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { store } from "../../GlobalData/store"
+import { useAuth } from "../../Contexts/AuthContext"
 
 //interface to model Team objects 
 interface Team {
-    teamId:number,
+    teamId:string,
     teamName:string,
     teamLocation:string
 }
 
 export const Teams:React.FC = () => {
+
+    const { loggedInUser } = useAuth();
 
     //We'll store a state object that holds an Array of Team objects.
     //This will get filled after the GET request
@@ -33,7 +36,7 @@ export const Teams:React.FC = () => {
         //axios GET request
         const response = await axios.get("http://localhost:4444/teams", {
             headers: {
-                'Authorization':`Bearer ${store.loggedInUser.token}`
+                'Authorization':`Bearer ${loggedInUser?.token}`
             }
         })
 
@@ -54,7 +57,7 @@ export const Teams:React.FC = () => {
 
             <Button className="btn-info" onClick={()=>{navigate("/")}}>Back</Button>
 
-            <h2>Welcome {store.loggedInUser.username} of {store.loggedInUser.team.teamName}</h2>
+            <h2>Welcome {loggedInUser?.username} of {loggedInUser?.team.teamName}</h2>
 
             <h3>Teams:</h3>
 

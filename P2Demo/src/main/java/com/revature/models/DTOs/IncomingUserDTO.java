@@ -5,20 +5,22 @@ package com.revature.models.DTOs;
     //We get to skip the userId, and we can just use an int for the team,
         //(instead of an entire JSON team object)
 
+import java.util.UUID;
+
 //NOTE: DTOs will be converted into their respective model in the Service
 public class IncomingUserDTO {
 
     private String username;
     private String password;
     private String role = "player";
-    private int teamId;
+    private UUID teamId;
 
     //boilerplate-----------------------
 
     public IncomingUserDTO() {
     }
 
-    public IncomingUserDTO(String username, String password, String role, int teamId) {
+    public IncomingUserDTO(String username, String password, String role, UUID teamId) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -49,11 +51,11 @@ public class IncomingUserDTO {
         this.role = role;
     }
 
-    public int getTeamId() {
+    public UUID getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(UUID teamId) {
         this.teamId = teamId;
     }
 

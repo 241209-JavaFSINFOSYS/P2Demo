@@ -4,8 +4,10 @@ import com.revature.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface AuthDAO extends JpaRepository<User, Integer> {
+public interface AuthDAO extends JpaRepository<User, UUID> {
 
     //I like to have a layer just for Auth stuff
     //In a personal project, I would probably put register in this layer too

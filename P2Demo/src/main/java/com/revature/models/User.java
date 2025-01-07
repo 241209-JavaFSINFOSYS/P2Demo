@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Component //1 of the 4 stereotype annotations (makes the class a Bean)
 @Entity //This annotation makes a DB table based on this Class
@@ -14,8 +15,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id //This annotation makes the field a primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //This makes our PK auto-increment integers
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.UUID) //This makes our PK auto-increment integers
+    private UUID userId;
 
     //@Column isn't necessary UNLESS you want to set DB column name or constraints
 
@@ -44,7 +45,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(int userId, String username, String password, String role, Team team) {
+    public User(UUID userId, String username, String password, String role, Team team) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -52,11 +53,11 @@ public class User implements UserDetails {
         this.team = team;
     }
 
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

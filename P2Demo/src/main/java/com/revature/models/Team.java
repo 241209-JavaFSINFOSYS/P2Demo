@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 //Check the User model comments for notes on each annotation
 
@@ -14,8 +15,8 @@ import java.util.List;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int teamId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID teamId;
 
     @Column(nullable=false)
     private String teamName;
@@ -40,17 +41,17 @@ public class Team {
     public Team() {
     }
 
-    public Team(int teamId, String teamName, String teamLocation) {
+    public Team(UUID teamId, String teamName, String teamLocation) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamLocation = teamLocation;
     }
 
-    public int getTeamId() {
+    public UUID getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(UUID teamId) {
         this.teamId = teamId;
     }
 

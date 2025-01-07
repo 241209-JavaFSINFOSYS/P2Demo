@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController //Combines @Controller and @ResponseBody
 @RequestMapping ("/users")//All HTTP requests ending in /users will be sent here
@@ -40,7 +41,7 @@ public class UserController {
 
     //A method that update a User's password (just one column, so it's a PATCH)
     @PatchMapping("/password/{userId}")
-    public ResponseEntity<User> updateUserPassword(@PathVariable int userId, @RequestBody String password){
+    public ResponseEntity<User> updateUserPassword(@PathVariable UUID userId, @RequestBody String password){
 
         //one liner - send back a 202 (accepted) with the updated User
         return ResponseEntity.accepted().body(userService.updateUserPassword(userId, password));

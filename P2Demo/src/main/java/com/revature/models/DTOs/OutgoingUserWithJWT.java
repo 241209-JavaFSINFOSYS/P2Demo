@@ -2,11 +2,13 @@ package com.revature.models.DTOs;
 
 import com.revature.models.Team;
 
+import java.util.UUID;
+
 //Here's another very common DTO -
 //send user info without password or any other sensitive info
 public class OutgoingUserWithJWT {
 
-    private int userId;
+    private UUID userId;
     private String username;
     private String role;
     private Team team;
@@ -17,7 +19,7 @@ public class OutgoingUserWithJWT {
     public OutgoingUserWithJWT() {
     }
 
-    public OutgoingUserWithJWT(int userId, String username, String role, Team team, String token) {
+    public OutgoingUserWithJWT(UUID userId, String username, String role, Team team, String token) {
         this.userId = userId;
         this.username = username;
         this.role = role;
@@ -25,11 +27,11 @@ public class OutgoingUserWithJWT {
         this.token = token;
     }
 
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
