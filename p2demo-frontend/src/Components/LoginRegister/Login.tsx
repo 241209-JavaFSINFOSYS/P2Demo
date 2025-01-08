@@ -40,6 +40,7 @@ export const Login:React.FC = () => {
 
             (response) => {
                 console.log(response)
+                console.log(response.data)
 
                 //save this data globally - great way to make important data easy to access
                 //check the store.ts in GlobalData
