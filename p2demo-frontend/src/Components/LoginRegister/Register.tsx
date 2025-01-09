@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SyntheticEvent, useState } from "react"
+import { useState } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
@@ -47,7 +47,7 @@ export const Register:React.FC = () => {
 
         //POST request - saving the response, but we won't need to use it here
         //NOTE the request to the (now-dead EC2)
-        const response = await axios.post("http://98.81.79.249:4444/users", newUser, {withCredentials:true})
+        await axios.post("http://localhost:4444/users", newUser, {withCredentials:true})
         .then(()=>{
             alert("User " + newUser.username + " created!")
             navigate("/")
@@ -79,7 +79,7 @@ export const Register:React.FC = () => {
             </div>
             <div>
                 <Form.Control
-                    type="number"
+                    type="text"
                     placeholder="team ID"
                     name="teamId"
                     onChange={storeValues}

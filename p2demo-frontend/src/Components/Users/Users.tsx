@@ -35,7 +35,7 @@ export const Users:React.FC  = () => {
     //Function to get all users 
     const getAllUsers = async () => {
 
-        const response = await axios.get("http://localhost:4444/users", {
+        await axios.get("http://localhost:4444/users", {
             headers: {
                 'Authorization':`Bearer ${store.loggedInUser.token}`
             }

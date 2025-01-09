@@ -1,13 +1,12 @@
 package com.revature.controllers;
 
 import com.revature.models.DTOs.LoginDTO;
-import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.models.DTOs.OutgoingUserWithJWT;
 import com.revature.models.User;
-//import com.revature.services.AuthService;
 import com.revature.utils.JwtTokenUtil;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +33,7 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
 
-        //NOTE: No more HTTP sessions! We're using JWTs now!
+        //NOTE: No more explicit HTTP sessions! We're using JWTs now!
         //No calls to the service layer either!
 
         //Attempt to log in
@@ -52,15 +51,16 @@ public class AuthController {
 
             //Return the OutgoingUserDTO info to the client
             //NOTE: in a real app, we could just send the JWT as it has all the info we need
-                //But I'm going to return all the user info just for clarity in in our returns
-            return ResponseEntity.ok(new OutgoingUserWithJWT(
-                    user.getUserId(),
-                    user.getUsername(),
-                    user.getRole(),
-                    user.getTeam(),
-                    token
-            ));
-
+                //But I'm going to return all the user info just for ease on the front end
+            return ResponseEntity.ok()
+                    .body(
+                        new OutgoingUserWithJWT(
+                                user.getUserId(),
+                                user.getUsername(),
+                                user.getRole(),
+                                user.getTeam(),
+                                token
+                        ));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(401).body(e.getMessage());
