@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Button, Container, Table } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { store } from "../../GlobalData/store"
+import { useAuth } from "../../Contexts/AuthContext"
 
 //interface to model Team objects 
 interface Team {
@@ -17,6 +18,10 @@ export const Teams:React.FC = () => {
     //This will get filled after the GET request
     const [teams, setTeams] = useState<Team[]>([])
 
+    //We want to ACCESS BUT NEVER CHANGE the user data from this component
+    //So we can leave out the mutator!
+    const {loggedInUser} = useAuth();
+
     //useEffect to send a GET request for teams on component load
     useEffect(()=>{
         getAllTeams()
@@ -28,12 +33,13 @@ export const Teams:React.FC = () => {
     //The function that sends the GET request
     const getAllTeams = async () => {
 
-        console.log(store.loggedInUser.token)
+        //console.log(store.loggedInUser.token)
 
         //axios GET request
         const response = await axios.get("http://localhost:4444/teams", {
             headers: {
-                'Authorization':`Bearer ${store.loggedInUser.token}`
+                //'Authorization':`Bearer ${store.loggedInUser.token}`
+                'Authorization':`Bearer ${loggedInUser?.token}`
             }
         })
 
@@ -45,7 +51,7 @@ export const Teams:React.FC = () => {
     }
 
     //hypothetical DELETE team method (just to show how to extract IDs)
-    const deleteTeam = (teamId:number) => {
+    const deleteTeam = (teamId:string) => {
         alert("Team " + teamId + " has been deleted (but not really)")
     }
 
@@ -54,7 +60,7 @@ export const Teams:React.FC = () => {
 
             <Button className="btn-info" onClick={()=>{navigate("/")}}>Back</Button>
 
-            <h2>Welcome {store.loggedInUser.username} of {store.loggedInUser.team.teamName}</h2>
+            <h2>Welcome {loggedInUser?.username} of {loggedInUser?.team.teamName}</h2>
 
             <h3>Teams:</h3>
 
