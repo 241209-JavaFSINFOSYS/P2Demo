@@ -22,6 +22,7 @@ interface AuthContextType {
 }
 
 //use the AuthContextType above to create our AuthContext
+//see the return() of the AuthProvider below!
 const AuthContext = createContext<AuthContextType | null>(null) 
 
 //The AuthProvider will PROVIDE our loggedInUser data to different components
@@ -45,6 +46,7 @@ export const AuthProvider: React.FC<{children:ReactNode}> = ({children}) => {
         }
     }, [loggedInUser])
 
+    //providing the loggedInUser object and setLoggedInUser to anything wrapped in the AuthContext
     return (
         <AuthContext.Provider value={{loggedInUser, setLoggedInUser}}>
             {children}
